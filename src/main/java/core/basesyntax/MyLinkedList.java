@@ -172,4 +172,5 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
         if (first == null) return true;
         return false;
     }
+
 }
