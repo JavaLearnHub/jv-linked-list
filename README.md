@@ -6,3 +6,4 @@ Make your LinkedList work as `java.util.LinkedList` (create `Node` objects to st
 Your implementation should have two pointers to the first and the last `Node`.
 
 #### [Try to avoid these common mistakes while solving task](./checklist.md)
+
