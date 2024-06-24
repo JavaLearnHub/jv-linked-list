@@ -4,8 +4,8 @@ import java.util.List;
 
 public class MyLinkedList<T> implements MyLinkedListInterface<T> {
     private int size = 0;
-    private Node<T> first;
-    private Node<T> last;
+    private Node<T> head;
+    private Node<T> tail;
     private static class Node<T>{
         T item;
         Node<T> prev;
@@ -21,11 +21,11 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
     // Adds new value at the last position
     @Override
     public void add(T value) {
-        if (last != null) {
-            last.next = new Node<>(last, value, null);
-            last = last.next;
+        if (tail != null) {
+            tail.next = new Node<>(tail, value, null);
+            tail = tail.next;
         }else{
-            first = last = new Node<>(null, value, null);
+            head = tail = new Node<>(null, value, null);
         }
         size++;
     }
@@ -34,12 +34,12 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
     // it throws IndexOutOfBoundsException
     @Override
     public void add(T value, int index) {
-        if (index >=0 && index <= size){
+        if (IndexOutOfBoundsException(index)){
             if (index == size) {
                 add(value);
             }
             else if(index == 0){
-                first = new Node<>(null, value, first);
+                head = new Node<>(null, value, head);
             }else{
                 Node<T> nextNode = getNode(index);
                 Node<T> prevNode = nextNode.prev;
@@ -65,27 +65,45 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
     // Returns an element value at the index position
     @Override
     public T get(int index) {
-        Node<T> temporaryNode = first;
+        Node<T> temporaryNode = head;
         int counter = 0;
 
         while(temporaryNode != null && counter != index){
             temporaryNode = temporaryNode.next;
             counter++;
         }
-        if (temporaryNode == null) throw new IndexOutOfBoundsException();
+        if (temporaryNode == null) {
+            throw new IndexOutOfBoundsException();
+        }
         return temporaryNode.item;
     }
 
     // Returns an element at the index position
     public Node<T> getNode(int index) {
-        Node<T> temporaryNode = first;
-        int counter = 0;
+        int halfSize = (int)size/2;
+        Node<T> temporaryNode = null;
 
-        while(temporaryNode != null && counter != index){
-            temporaryNode = temporaryNode.next;
-            counter++;
+        if (index <= halfSize){
+            temporaryNode = head;
+            int counter = 0;
+
+            while(temporaryNode != null && counter != index){
+                temporaryNode = temporaryNode.next;
+                counter++;
+            }
+
+        }else{
+            temporaryNode = tail;
+            int counter = size-1;
+
+            while(temporaryNode != null && counter != index){
+                temporaryNode = temporaryNode.prev;
+                counter--;
+            }
         }
-        if (temporaryNode == null) throw new IndexOutOfBoundsException();
+        if (temporaryNode == null) {
+            throw new IndexOutOfBoundsException();
+        }
         return temporaryNode;
     }
 
@@ -93,14 +111,16 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
     // returns the value of the element
     @Override
     public T set(T value, int index) {
-        Node<T> temporaryNode = first;
+        Node<T> temporaryNode = head;
         int counter = 0;
 
         while(temporaryNode != null && counter != index){
             temporaryNode = temporaryNode.next;
             counter++;
         }
-        if (temporaryNode == null) throw new IndexOutOfBoundsException();
+        if (temporaryNode == null) {
+            throw new IndexOutOfBoundsException();
+        }
 
         T prevValue = temporaryNode.item;
         temporaryNode.item = value;
@@ -115,18 +135,21 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
         T removalValue = removalNode.item;
 
         if (index == 0) {
-            first = first.next;
-            if (first != null) first.prev = null;
-            else last = null;
-        }else if(index == size-1){
-            last.prev.next = null;
-            last = last.prev;
+            head = head.next;
+            if (head != null) {
+                head.prev = null;
+            }
+            else {
+                tail = null;
+            }
+        } else if (index == size-1) {
+            tail.prev.next = null;
+            tail = tail.prev;
         }
         else {
             removalNode.prev.next = removalNode.next;
             removalNode.next.prev = removalNode.prev;
         }
-
         size--;
         return removalValue;
     }
@@ -135,13 +158,13 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
     // returns true if the element is deleted or false if isn't
     @Override
     public boolean remove(T object) {
-        Node<T> temporaryNode = first;
+        Node<T> temporaryNode = head;
         Node<T> removalNode = null;
         int counter = 0;
 
         while(temporaryNode != null){
             if (temporaryNode.item == null){
-                if (object == null) {
+                if (object == null){
                     removalNode = temporaryNode;
                     break;
                 }
@@ -153,7 +176,9 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
             temporaryNode = temporaryNode.next;
             counter++;
         }
-        if (removalNode == null) return false;
+        if (removalNode == null) {
+            return false;
+        }
         else{
             remove(counter);
             return true;
@@ -169,8 +194,10 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
     // Returns true if LinkedList is empty and false if it isn't
     @Override
     public boolean isEmpty() {
-        if (first == null) return true;
-        return false;
+        return head == null;
     }
 
+    private boolean IndexOutOfBoundsException(int index){
+        return index >=0 && index <= size;
+    }
 }
