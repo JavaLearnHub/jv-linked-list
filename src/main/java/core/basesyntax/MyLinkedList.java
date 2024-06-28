@@ -24,7 +24,7 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
         if (tail != null) {
             tail.next = new Node<>(tail, value, null);
             tail = tail.next;
-        }else{
+        } else {
             head = tail = new Node<>(null, value, null);
         }
         size++;
@@ -34,7 +34,7 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
     // it throws IndexOutOfBoundsException
     @Override
     public void add(T value, int index) {
-        if (IndexOutOfBoundsException(index)){
+        if (IndexOutOfBoundsException(index)) {
             if (index == size) {
                 add(value);
             }
@@ -87,7 +87,7 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
             temporaryNode = head;
             int counter = 0;
 
-            while(temporaryNode != null && counter != index){
+            while (temporaryNode != null && counter != index) {
                 temporaryNode = temporaryNode.next;
                 counter++;
             }
