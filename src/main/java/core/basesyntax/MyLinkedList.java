@@ -35,7 +35,7 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
     // it throws IndexOutOfBoundsException
     @Override
     public void add(T value, int index) {
-        if (index <= size) {
+        if (checkIndex(index)) {
             if (index == size) {
                 add(value);
             } else if (index == 0) {
@@ -193,7 +193,7 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
         return head == null;
     }
 
-    private boolean IndexOutOfBoundsException(int index) {
+    private boolean checkIndex(int index) {
         return index >= 0 && index <= size;
     }
 }
